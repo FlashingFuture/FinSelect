@@ -1,0 +1,50 @@
+from django.db import models
+from django.conf import settings
+# Create your models here.
+
+class Bank(models.Model):
+    name = models.CharField(max_length=100, verbose_name='은행 이름')
+    bank_tag = models.CharField(max_length=20, verbose_name='은행 종류')
+    bank_image = models.ImageField(upload_to='bank_images/', verbose_name='은행 이미지')
+    bank_url = models.URLField(blank=True, null=True, verbose_name='은행 URL')
+
+class FixedDeposit(models.Model):
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, verbose_name='은행')
+    name = models.CharField(max_length=255, verbose_name='정기예금 이름')
+    updated_at = models.CharField(max_length=20, verbose_name='업데이트 일시')
+    join_member = models.CharField(max_length=255, blank=True, null=True, verbose_name='가입 대상')
+    join_deny = models.CharField(max_length=255, blank=True, null=True, verbose_name='가입 제한 조건')
+    join_way = models.CharField(max_length=255, blank=True, null=True, verbose_name='가입 방법')
+    save_trm = models.IntegerField(verbose_name='저축 기간')
+    max_limit = models.IntegerField(blank=True, null=True, verbose_name='최대 한도')
+    intr_rate = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='기본 금리')
+    intr_rate2 = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='우대 금리')
+    intr_rate_type = models.CharField(max_length=255, blank=True, null=True, verbose_name='금리 a')
+    spcl_cnd = models.CharField(max_length=255, blank=True, null=True, verbose_name='우대 조건')
+    etc_note = models.CharField(max_length=255, blank=True, null=True, verbose_name='기타 사항')
+    liked_by_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_fixed_accounts', verbose_name='찜한 유저들')
+    pin_number = models.CharField(max_length=255, verbose_name='핀 넘버')
+    bank_code = models.CharField(max_length=255, verbose_name='금융회사 코드')
+    isCheck = models.BooleanField(verbose_name='이전 자료 비교 여부 확인')
+    views = models.IntegerField(default=0, verbose_name='조회수') 
+
+class SavingsAccount(models.Model):
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE, verbose_name='은행')
+    name = models.CharField(max_length=255, verbose_name='적금 이름')
+    updated_at = models.CharField(max_length=20, verbose_name='업데이트 일시')
+    join_member = models.CharField(max_length=255, blank=True, null=True, verbose_name='가입 대상')
+    join_deny = models.CharField(max_length=255, blank=True, null=True, verbose_name='가입 제한 조건')
+    join_way = models.CharField(max_length=255, blank=True, null=True, verbose_name='가입 방법')
+    save_trm = models.IntegerField(verbose_name='저축 기간')
+    max_limit = models.IntegerField(blank=True, null=True, verbose_name='최대 한도')
+    intr_rate = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='기본 금리')
+    intr_rate2 = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='우대 금리')
+    intr_rate_type = models.CharField(max_length=255, blank=True, null=True, verbose_name='금리 유형')
+    spcl_cnd = models.CharField(max_length=255, blank=True, null=True, verbose_name='우대 조건')
+    etc_note = models.CharField(max_length=255, blank=True, null=True, verbose_name='기타 사항')
+    liked_by_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked_savings_accounts', verbose_name='찜한 유저들')
+    pin_number = models.CharField(max_length=255, verbose_name='핀 넘버')
+    bank_code = models.CharField(max_length=255, verbose_name='금융회사 코드')
+    isCheck = models.BooleanField(verbose_name='이전 자료 비교 여부 확인')
+    rsrv_type= models.CharField(max_length=20, verbose_name='적립 유형')
+    views = models.IntegerField(default=0, verbose_name='조회수') 
