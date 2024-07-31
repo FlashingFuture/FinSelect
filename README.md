@@ -1,5 +1,5 @@
 # FinSelect
-금융상품 추천 서비스 (SSAFY 1학기 관통프로젝트)
+금융상품 추천 서비스
 ### front 사용방법
 1. VSCode 실행 후 프로젝트 기본 위치에서 finance-pjt 폴더로 이동 
 ```shell
